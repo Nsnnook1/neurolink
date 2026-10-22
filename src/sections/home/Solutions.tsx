@@ -1,95 +1,178 @@
-import Button from "@/components/Button";
+import Image from "next/image";
+import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
+
+const solutions = [
+  {
+    number: "01",
+    category: "AI-POWERED BRAIN MRI ANALYSIS",
+    name: "HEURON AgingCare",
+    headline: "เข้าใจสุขภาพสมองผ่านเทคโนโลยี AI",
+    description:
+      "เทคโนโลยี AI วิเคราะห์ข้อมูลจากภาพ MRI สมอง เพื่อสร้างข้อมูลเชิงปริมาณสำหรับประกอบการประเมินและติดตามสุขภาพสมอง",
+    image: "/images/heuron-bg.png",
+    href: "/heuron",
+    cta: "Explore HEURON AgingCare",
+    theme: "heuron",
+  },
+  {
+    number: "02",
+    category: "EVERYDAY WELLNESS",
+    name: "ETERNA",
+    headline: "ใส่ใจสุขภาพในทุกวัน",
+    description:
+      "ผลิตภัณฑ์ที่พัฒนาขึ้นเพื่อการดูแลสุขภาพอย่างต่อเนื่อง โดยคัดเลือกสารสกัดและส่วนประกอบสำคัญเพื่อเป็นส่วนหนึ่งของการดูแลสุขภาพในชีวิตประจำวัน",
+    image: "/images/eterna-bg.png",
+    href: "/eterna",
+    cta: "Discover ETERNA",
+    theme: "eterna",
+  },
+] as const;
 
 export default function Solutions() {
   return (
-    <section id="solutions" className="bg-white px-5 py-20 lg:px-14 lg:py-28">
+    <section
+      id="solutions"
+      className="overflow-hidden bg-white px-5 py-14 lg:px-14 lg:py-20"
+    >
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
-          <p className="text-base font-medium text-[#506960]">OUR SOLUTIONS</p>
+          <p className="text-base font-medium tracking-[0.12em] text-[#506960]">
+            OUR SOLUTIONS
+          </p>
 
           <h2 className="mt-3 text-h2 font-bold leading-tight text-[#0B3328] lg:text-h2-desktop">
             เทคโนโลยีและนวัตกรรมเพื่อสุขภาพ
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-body leading-[1.8] text-[#506960]">
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-[1.8] text-[#506960]">
             NeuroLink นำเทคโนโลยีและนวัตกรรมด้านสุขภาพมาประยุกต์ใช้
             เพื่อให้การดูแลสุขภาพเป็นเรื่องที่เข้าใจง่ายและนำไปใช้ได้จริง
           </p>
         </div>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-2 lg:gap-10">
-          {/* HEURON */}
-          <ScrollReveal delay={0} reverseDelay={200}>
-            <div className="flex min-h-[340px] flex-col justify-between rounded-2xl bg-[#E8F2EC] p-6 lg:min-h-[420px] lg:p-8">
-              <div>
-                <h3 className="text-h3 font-bold text-[#0B3328] lg:text-h3-desktop">
-                  HEURON AgingCare
-                </h3>
+        {/* SOLUTION SHOWCASE */}
+        <div className="mt-10 flex flex-col gap-6 lg:mt-14 lg:gap-8">
+          {solutions.map((solution, index) => {
+            const isHeuron = solution.theme === "heuron";
 
-                <p className="mt-2 text-base font-medium text-[#176349]">
-                  AI-POWERED BRAIN MRI ANALYSIS
-                </p>
-
-                <h4 className="mt-7 text-h4 font-bold leading-snug text-[#0B3328] lg:text-h4-desktop">
-                  เข้าใจสุขภาพสมอง
-                  <br />
-                  ผ่านเทคโนโลยี AI
-                </h4>
-
-                <p className="mt-4 max-w-md text-body leading-[1.8] text-[#40584E]">
-                  เทคโนโลยี AI สำหรับวิเคราะห์ข้อมูลจากภาพ MRI สมอง
-                  เพื่อเปลี่ยนข้อมูลจากภาพทางการแพทย์ให้เป็นข้อมูลเชิงปริมาณ
-                  สำหรับประกอบการประเมินและติดตามสุขภาพสมองอย่างเป็นระบบ
-                </p>
-              </div>
-
-              <Button
-                href="/heuron"
-                variant="secondary"
-                color="green"
-                className="mt-8"
+            return (
+              <ScrollReveal
+                key={solution.name}
+                delay={index * 120}
+                reverseDelay={index === 0 ? 200 : 0}
               >
-                Explore HEURON AgingCare
-              </Button>
-            </div>
-          </ScrollReveal>
+                <article
+                  className={`relative isolate overflow-hidden rounded-[24px] border shadow-[0_12px_36px_rgba(16,60,46,0.05)] lg:min-h-[370px] ${
+                    isHeuron
+                      ? "border-[#E1EBE5] bg-[#EDF5F0]"
+                      : "border-[#E6EAF0] bg-[#F1F4F7]"
+                  }`}
+                >
+                  {/* DESKTOP */}
+                  <div className="pointer-events-none absolute inset-0 -z-20 hidden lg:block">
+                    <Image
+                      src={solution.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1280px) 1280px, 100vw"
+                      className="object-cover object-center"
+                    />
+                  </div>
 
-          {/* ETERNA */}
-          <ScrollReveal delay={200} reverseDelay={0} className="lg:mt-20">
-            <div className="flex min-h-[340px] flex-col justify-between rounded-2xl bg-[#142B46] p-6 lg:min-h-[420px] lg:p-8">
-              <div>
-                <h3 className="text-h3 font-bold text-white lg:text-h3-desktop">
-                  ETERNA
-                </h3>
+                  {/* DESKTOP */}
+                  <div
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute inset-0 -z-10 hidden lg:block ${
+                      isHeuron
+                        ? "bg-gradient-to-r from-[#EDF5F0]/75 via-[#EDF5F0]/20 to-transparent"
+                        : "bg-gradient-to-r from-[#F1F4F7]/75 via-[#F1F4F7]/20 to-transparent"
+                    }`}
+                  />
 
-                <p className="mt-2 text-base font-medium text-[#E5CCA0]">
-                  EVERYDAY WELLNESS
-                </p>
+                  {/* MOBILE */}
+                  <div className="relative h-[205px] overflow-hidden sm:h-[250px] lg:hidden">
+                    <Image
+                      src={solution.image}
+                      alt={
+                        isHeuron
+                          ? "ภาพประกอบ AI วิเคราะห์ข้อมูล MRI สมอง"
+                          : "ภาพประกอบสารสกัดและส่วนประกอบสำคัญของ ETERNA"
+                      }
+                      fill
+                      sizes="(min-width: 640px) 600px, 100vw"
+                      className="object-cover object-[80%_center]"
+                    />
+                  </div>
 
-                <h4 className="mt-7 text-h4 font-bold leading-snug text-white lg:text-h4-desktop">
-                  ใส่ใจสุขภาพ
-                  <br />
-                  ในทุกวัน
-                </h4>
+                  <div className="relative flex flex-col items-start px-6 pb-7 pt-6 sm:px-8 lg:min-h-[370px] lg:w-[49%] lg:justify-center lg:px-12 lg:py-9">
+                    <div className="flex items-start gap-3">
+                      <span
+                        className={`shrink-0 text-sm font-medium ${
+                          isHeuron ? "text-[#176349]" : "text-[#8C6B2B]"
+                        }`}
+                      >
+                        {solution.number}
+                      </span>
 
-                <p className="mt-4 max-w-md text-body leading-[1.8] text-[#E5EAF0]">
-                  ผลิตภัณฑ์ที่พัฒนาขึ้นภายใต้แนวคิดการดูแลสุขภาพอย่างต่อเนื่อง
-                  โดยคัดเลือกสารสกัดและส่วนประกอบสำคัญ
-                  เพื่อเป็นส่วนหนึ่งของการดูแลสุขภาพในชีวิตประจำวัน
-                </p>
-              </div>
+                      <span
+                        aria-hidden="true"
+                        className={`mt-[11px] h-px w-6 shrink-0 ${
+                          isHeuron ? "bg-[#91B7A4]" : "bg-[#C5AB76]"
+                        }`}
+                      />
 
-              <Button
-                href="/eterna"
-                variant="secondary"
-                color="blue"
-                className="mt-8"
-              >
-                Discover ETERNA
-              </Button>
-            </div>
-          </ScrollReveal>
+                      <p
+                        className={`text-sm font-medium leading-[1.5] tracking-[0.025em] ${
+                          isHeuron ? "text-[#176349]" : "text-[#8C6B2B]"
+                        }`}
+                      >
+                        {solution.category}
+                      </p>
+                    </div>
+
+                    <h3
+                      className={`mt-4 text-[27px] font-bold leading-[1.2] tracking-[-0.02em] sm:text-[30px] lg:text-[32px] ${
+                        isHeuron ? "text-[#0B3328]" : "text-[#173A4A]"
+                      }`}
+                    >
+                      {solution.name}
+                    </h3>
+
+                    <p
+                      className={`mt-3 text-[20px] font-semibold leading-[1.5] ${
+                        isHeuron ? "text-[#176349]" : "text-[#8C6B2B]"
+                      }`}
+                    >
+                      {solution.headline}
+                    </p>
+
+                    <p
+                      className={`mt-3 max-w-[450px] text-base leading-[1.8] ${
+                        isHeuron ? "text-[#40584E]" : "text-[#405565]"
+                      }`}
+                    >
+                      {solution.description}
+                    </p>
+
+                    <div className="mt-6">
+                      <Link
+                        href={solution.href}
+                        className={`inline-flex min-h-12 items-center justify-center gap-3 rounded-full px-5 py-3 text-base font-medium transition-colors ${
+                          isHeuron
+                            ? "bg-[#07583F] text-white hover:bg-[#064733]"
+                            : "bg-white text-[#174D70] hover:bg-[#F6FAFD]"
+                        }`}
+                      >
+                        {solution.cta}
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              </ScrollReveal>
+            );
+          })}
         </div>
       </div>
     </section>

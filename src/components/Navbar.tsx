@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -71,11 +72,18 @@ export default function Navbar() {
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-10">
         <Link
           href="/"
-          className="text-xl font-bold text-green-900"
+          className="inline-flex shrink-0 items-center"
           onClick={closeMenu}
           aria-label="NeuroLink AI - Home"
         >
-          NEUROLINK AI
+          <Image
+            src="/images/NeuroLinkLogo.png"
+            alt="NeuroLink AI"
+            width={180}
+            height={54}
+            priority
+            className="h-auto w-[145px] object-contain sm:w-[170px] lg:w-[250px]"
+          />
         </Link>
 
         {/* Desktop Navigation */}
