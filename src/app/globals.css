@@ -50,9 +50,12 @@
 
   --text-h4: 1.25rem;
   --text-h4-desktop: 1.5rem;
+
+  --font-sans: var(--font-ibm-plex-thai);
 }
 
 body {
+  font-family: var(--font-ibm-plex-thai), sans-serif;
   background: var(--color-background);
   color: var(--color-text);
   font-size: 1rem;
@@ -143,5 +146,11 @@ html {
   .hero-light-node {
     animation: none;
     opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(#article-content:target) {
+    scroll-behavior: smooth;
   }
 }

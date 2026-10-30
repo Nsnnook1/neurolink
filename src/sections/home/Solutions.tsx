@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
+import Button from "@/components/Button";
 
 const solutions = [
   {
@@ -42,7 +42,9 @@ export default function Solutions() {
           </p>
 
           <h2 className="mt-3 text-h2 font-bold leading-tight text-[#0B3328] lg:text-h2-desktop">
-            เทคโนโลยีและนวัตกรรมเพื่อสุขภาพ
+            เทคโนโลยีและนวัตกรรม
+            <br className="lg:hidden" />
+            <span className="whitespace-nowrap">เพื่อสุขภาพ</span>
           </h2>
 
           <p className="mx-auto mt-4 max-w-2xl text-base leading-[1.8] text-[#506960]">
@@ -156,17 +158,14 @@ export default function Solutions() {
                     </p>
 
                     <div className="mt-6">
-                      <Link
+                      <Button
                         href={solution.href}
-                        className={`inline-flex min-h-12 items-center justify-center gap-3 rounded-full px-5 py-3 text-base font-medium transition-colors ${
-                          isHeuron
-                            ? "bg-[#07583F] text-white hover:bg-[#064733]"
-                            : "bg-white text-[#174D70] hover:bg-[#F6FAFD]"
-                        }`}
+                        color={isHeuron ? "green" : "blue"}
+                        variant="primary"
+                        size="md"
                       >
                         {solution.cta}
-                        <span aria-hidden="true">→</span>
-                      </Link>
+                      </Button>
                     </div>
                   </div>
                 </article>

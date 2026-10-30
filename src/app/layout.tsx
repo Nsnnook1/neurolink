@@ -2,6 +2,14 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import { IBM_Plex_Sans_Thai } from "next/font/google";
+
+const ibmPlexSansThai = IBM_Plex_Sans_Thai({
+  subsets: ["thai", "latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-ibm-plex-thai",
+});
 
 export const metadata: Metadata = {
   title: "NeuroLink AI",
@@ -15,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="th">
-      <body>
+      <body className={ibmPlexSansThai.variable}>
         <Navbar />
         {children}
         <Footer />

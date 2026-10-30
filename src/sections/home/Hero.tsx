@@ -110,12 +110,12 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-[440px] text-base leading-[1.8] text-[#40584E] lg:mx-0 lg:mt-7 lg:max-w-[520px]">
+          <p className="hidden mx-auto mt-6 max-w-[440px] text-base leading-[1.8] text-[#40584E] lg:mx-0 lg:mt-7 lg:block lg:max-w-[520px]">
             NeuroLink ผสานเทคโนโลยี องค์ความรู้ทางการแพทย์ และข้อมูลสุขภาพ
             เพื่อสนับสนุนการดูแลสุขภาพที่เข้าถึงง่าย เข้าใจได้ และนำไปใช้ได้จริง
           </p>
 
-          <div className="mt-6 flex justify-center lg:mt-9 lg:justify-start">
+          <div className="mt-6 hidden justify-center lg:mt-9 lg:flex lg:justify-start">
             <Button href="/solutions">สำรวจโซลูชันของเรา</Button>
           </div>
         </div>
@@ -201,6 +201,9 @@ export default function Hero() {
               </div>
             </div>
           ))}
+          <div className="mt-6 flex w-full justify-center lg:hidden">
+            <Button href="/solutions">สำรวจโซลูชันของเรา</Button>
+          </div>
         </div>
       </div>
     </section>

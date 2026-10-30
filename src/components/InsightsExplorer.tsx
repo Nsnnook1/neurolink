@@ -12,7 +12,6 @@ export default function InsightsExplorer({
   articles: Insight[];
 }) {
   const [category, setCategory] = useState("All Articles");
-  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
   const categories = useMemo(
@@ -23,22 +22,14 @@ export default function InsightsExplorer({
     [articles],
   );
 
-  const filteredArticles = useMemo(() => {
-    return articles.filter((article) => {
-      const matchesCategory =
-        category === "All Articles" || article.category === category;
-
-      const query = search.trim().toLowerCase();
-
-      const matchesSearch =
-        !query ||
-        `${article.title} ${article.excerpt} ${article.category}`
-          .toLowerCase()
-          .includes(query);
-
-      return matchesCategory && matchesSearch;
-    });
-  }, [articles, category, search]);
+  const filteredArticles = useMemo(
+    () =>
+      articles.filter(
+        (article) =>
+          category === "All Articles" || article.category === category,
+      ),
+    [articles, category],
+  );
 
   const totalPages = Math.max(
     1,
@@ -52,32 +43,14 @@ export default function InsightsExplorer({
 
   return (
     <div>
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p className="text-sm font-semibold tracking-[0.14em] text-[#398366]">
-            EXPLORE ARTICLES
-          </p>
-          <h2 className="mt-3 text-[28px] font-bold text-[#0B3328] lg:text-[36px]">
-            บทความทั้งหมด
-          </h2>
-        </div>
-
-        <div className="w-full lg:max-w-[400px]">
-          <label htmlFor="insights-search" className="sr-only">
-            ค้นหาบทความ
-          </label>
-          <input
-            id="insights-search"
-            type="search"
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-              setPage(1);
-            }}
-            placeholder="ค้นหาบทความ..."
-            className="min-h-12 w-full rounded-full border border-[#D7E4DC] bg-white px-5 text-base text-[#0B3328] outline-none focus:border-[#398366]"
-          />
-        </div>
+      {/* SECTION HEADING */}
+      <div>
+        <p className="text-sm font-semibold tracking-[0.14em] text-[#398366]">
+          EXPLORE ARTICLES
+        </p>
+        <h2 className="mt-3 text-[28px] font-bold text-[#0B3328] lg:text-[36px]">
+          บทความทั้งหมด
+        </h2>
       </div>
 
       {/* CATEGORY FILTER */}
@@ -118,12 +91,12 @@ export default function InsightsExplorer({
           <h3 className="text-[20px] font-semibold text-[#0B3328]">
             {articles.length === 0
               ? "บทความใหม่กำลังจะมาเร็ว ๆ นี้"
-              : "ไม่พบบทความที่ค้นหา"}
+              : "ยังไม่มีบทความในหมวดหมู่นี้"}
           </h3>
           <p className="mt-3 text-base leading-[1.8] text-[#506960]">
             {articles.length === 0
               ? "ติดตามความรู้ด้านสุขภาพ เทคโนโลยี และการดูแลคุณภาพชีวิตได้ที่นี่"
-              : "ลองเปลี่ยนคำค้นหาหรือเลือกหมวดหมู่อื่น"}
+              : "ลองเลือกหมวดหมู่อื่นเพื่อสำรวจบทความเพิ่มเติม"}
           </p>
         </div>
       )}

@@ -24,8 +24,8 @@ const mockInsights: InsightRecord[] = [
     title: "Lorem ipsum dolor sit amet consectetur adipiscing elit",
     excerpt:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    coverImage: "",
-    imageAlt: "Lifestyle placeholder",
+    coverImage: "/images/neurolink-lifestyle-cover.png",
+    imageAlt: "ผู้หญิงรับแสงแดดยามเช้าท่ามกลางธรรมชาติ",
     category: "LIFESTYLE",
     content: "Lorem ipsum dolor sit amet.",
     publishedAt: "2026-10-20T09:00:00+07:00",

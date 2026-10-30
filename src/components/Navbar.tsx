@@ -79,10 +79,9 @@ export default function Navbar() {
           <Image
             src="/images/NeuroLinkLogo.png"
             alt="NeuroLink AI"
-            width={180}
-            height={54}
-            priority
-            className="h-auto w-[145px] object-contain sm:w-[170px] lg:w-[250px]"
+            width={200}
+            height={60}
+            className="w-40 h-auto"
           />
         </Link>
 
@@ -129,7 +128,7 @@ export default function Navbar() {
 
         {/* Desktop Contact Button */}
         <Link
-          href="/contact"
+          href="/#contact"
           aria-current={isActive("/contact") ? "page" : undefined}
           className={`
             hidden min-h-12 items-center justify-center
@@ -170,60 +169,75 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div
-          id="mobile-menu"
-          className={`
-            flex flex-col gap-2
-            border-t border-[#E0EAE3]
-            px-5 py-5 lg:hidden
-            ${isScrolled ? "bg-white/95 backdrop-blur-xl" : "bg-white"}
-          `}
-        >
-          {navLinks.map((link) => {
-            const active = isActive(link.href);
 
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={closeMenu}
-                aria-current={active ? "page" : undefined}
-                className={`
-                  flex min-h-12 items-center
-                  rounded-xl px-4 py-3 text-base
-                  transition-colors duration-300
-                  ${
-                    active
-                      ? "bg-[#E7F0E9] font-semibold text-[#07583F]"
-                      : "font-medium text-[#506960] hover:bg-[#F4F8F5]"
-                  }
-                `}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+      {/* Smooth Mobile Dropdown */}
+      <div
+        id="mobile-menu"
+        aria-hidden={!isMenuOpen}
+        inert={!isMenuOpen}
+        className={`
+          absolute left-0 right-0 top-full z-50
+          grid overflow-hidden bg-white
+          shadow-[0_18px_35px_rgba(13,65,45,0.10)]
+          transition-[grid-template-rows,opacity]
+          duration-500
+          ease-[cubic-bezier(0.22,1,0.36,1)]
+          motion-reduce:transition-none
+          lg:hidden
+          ${
+            isMenuOpen
+              ? "grid-rows-[1fr] opacity-100"
+              : "pointer-events-none grid-rows-[0fr] opacity-0"
+          }
+        `}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4">
+            {navLinks.map((link) => {
+              const active = isActive(link.href);
 
-          <Link
-            href="/contact"
-            onClick={closeMenu}
-            aria-current={isActive("/contact") ? "page" : undefined}
-            className={`
-              mt-2 flex min-h-12 items-center
-              justify-center rounded-full px-6 py-3
-              text-base font-semibold
-              ${
-                isActive("/contact")
-                  ? "bg-[#DCECE3] text-[#07583F]"
-                  : "bg-[#07583F] text-white"
-              }
-            `}
-          >
-            Contact Us
-          </Link>
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={closeMenu}
+                  aria-current={active ? "page" : undefined}
+                  className={`
+                    flex min-h-11 items-center
+                    rounded-xl px-4 py-2 text-base
+                    transition-colors duration-200
+                    ${
+                      active
+                        ? "bg-[#E7F0E9] font-semibold text-[#07583F]"
+                        : "font-medium text-[#506960] hover:bg-[#F4F8F5]"
+                    }
+                  `}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+
+            <Link
+              href="/#contact"
+              onClick={closeMenu}
+              aria-current={isActive("/contact") ? "page" : undefined}
+              className={`
+                mt-2 flex min-h-11 items-center justify-center
+                rounded-full px-6 py-2 text-base font-semibold
+                transition-colors duration-200
+                ${
+                  isActive("/contact")
+                    ? "bg-[#DCECE3] text-[#07583F]"
+                    : "bg-[#07583F] text-white hover:bg-[#064B36]"
+                }
+              `}
+            >
+              Contact Us
+            </Link>
+          </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
