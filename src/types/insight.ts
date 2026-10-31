@@ -1,3 +1,4 @@
+
 export type Insight = {
   id: string;
   slug: string;
@@ -13,4 +14,8 @@ export type InsightRecord = Insight & {
   content: string;
   status: "draft" | "published";
   updatedAt?: string;
+  seo?: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
 };

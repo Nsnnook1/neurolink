@@ -1,11 +1,47 @@
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getInsightBySlug } from "@/lib/insights";
+import { getInsightImage } from "@/lib/insightImages";
+import type { Metadata } from "next";
+import sanitizeHtml from "sanitize-html";
+import Image from "next/image";
+import Link from "next/link";
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({
+  params,
+}: ArticlePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getInsightBySlug(slug);
+
+  if (!article) {
+    return {
+      title: "ไม่พบบทความ | Neurolink",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const title = article.seo?.metaTitle || `${article.title} | Neurolink`;
+  const description = article.seo?.metaDescription || article.excerpt;
+  const image = getInsightImage(article);
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/insights/${encodeURIComponent(slug)}`,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      publishedTime: article.publishedAt,
+      images: image ? [{ url: image }] : [],
+    },
+  };
+}
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
@@ -53,9 +89,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
             {/* COVER IMAGE */}
             <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] bg-[#DCEBE2] shadow-[0_16px_42px_rgba(13,65,45,0.10)] lg:aspect-[5/4] lg:rounded-[32px]">
-              {article.coverImage && (
+              {getInsightImage(article) && (
                 <Image
-                  src={article.coverImage}
+                  src={getInsightImage(article)!}
                   alt={article.imageAlt || article.title}
                   fill
                   priority
@@ -96,9 +132,59 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         className="scroll-mt-24 px-5 pb-20 pt-12 lg:px-8 lg:pb-28 lg:pt-20"
       >
         <article className="mx-auto max-w-[760px]">
-          <div className="whitespace-pre-line text-base leading-[2] text-[#344C43] lg:text-lg">
-            {article.content}
-          </div>
+          <div
+            className="
+    text-base leading-[1.9] text-[#344C43]
+    lg:text-lg
+    [&_p]:mb-6
+    [&_h2]:mb-5 [&_h2]:mt-12
+    [&_h2]:text-[26px] [&_h2]:font-bold
+    [&_h2]:leading-[1.35] [&_h2]:text-[#0B3328]
+    [&_h3]:mb-4 [&_h3]:mt-9
+    [&_h3]:text-[21px] [&_h3]:font-semibold
+    [&_h3]:text-[#0B3328]
+    [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-6
+    [&_ol]:mb-6 [&_ol]:list-decimal [&_ol]:pl-6
+    [&_li]:mb-2
+    [&_a]:font-medium [&_a]:text-[#16825D]
+    [&_a]:underline [&_a]:underline-offset-4
+    [&_blockquote]:my-8
+    [&_blockquote]:border-l-4
+    [&_blockquote]:border-[#75B69A]
+    [&_blockquote]:pl-5
+    [&_blockquote]:italic
+    [&_img]:my-8 [&_img]:h-auto
+    [&_img]:max-w-full [&_img]:rounded-2xl
+  "
+            dangerouslySetInnerHTML={{
+              __html: sanitizeHtml(article.content, {
+                allowedTags: [
+                  "p",
+                  "br",
+                  "strong",
+                  "b",
+                  "em",
+                  "i",
+                  "h2",
+                  "h3",
+                  "h4",
+                  "ul",
+                  "ol",
+                  "li",
+                  "a",
+                  "blockquote",
+                  "img",
+                  "figure",
+                  "figcaption",
+                ],
+                allowedAttributes: {
+                  a: ["href", "title", "target", "rel"],
+                  img: ["src", "alt", "width", "height"],
+                },
+                allowedSchemes: ["http", "https", "mailto"],
+              }),
+            }}
+          />
 
           <div className="mt-16 border-t border-[#D7E4DC] pt-8">
             <Link

@@ -176,4 +176,22 @@ html {
   }
 }
 
+.insights-page {
+  background-color: #fafcfb;
+}
 
+/* Desktop */
+.insights-background-content {
+  background-image: url("/images/insights/insights-bg.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+}
+
+@media (max-width: 767px) {
+  .insights-background-content {
+    background-image: url("/images/insights/insights-bg-mobile.png");
+    background-size: 100% auto;
+    background-position: center top;
+  }
+}

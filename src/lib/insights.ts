@@ -1,69 +1,90 @@
 
 import type { Insight, InsightRecord } from "@/types/insight";
 
-const SHOW_MOCK_ARTICLES = true;
+const API_URL =
+  process.env.NEUROLINK_API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://neurolink-api-p8my.onrender.com";
 
-// ทดสอบ
-const mockInsights: InsightRecord[] = [
-  {
-    id: "mock-003",
-    slug: "mock-nutrition",
-    title: "Lorem ipsum dolor sit amet consectetur adipiscing elit",
-    excerpt:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    coverImage: "",
-    imageAlt: "Nutrition placeholder",
-    category: "NUTRITION",
-    content: "Lorem ipsum dolor sit amet.",
-    publishedAt: "2026-10-22T09:00:00+07:00",
-    status: "published",
-  },
-  {
-    id: "mock-002",
-    slug: "mock-lifestyle",
-    title: "Lorem ipsum dolor sit amet consectetur adipiscing elit",
-    excerpt:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    coverImage: "/images/neurolink-lifestyle-cover.png",
-    imageAlt: "ผู้หญิงรับแสงแดดยามเช้าท่ามกลางธรรมชาติ",
-    category: "LIFESTYLE",
-    content: "Lorem ipsum dolor sit amet.",
-    publishedAt: "2026-10-20T09:00:00+07:00",
-    status: "published",
-  },
-  {
-    id: "mock-001",
-    slug: "mock-brain-health",
-    title: "Lorem ipsum dolor sit amet consectetur adipiscing elit",
-    excerpt:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    coverImage: "",
-    imageAlt: "Brain Health placeholder",
-    category: "BRAIN HEALTH",
-    content: "Lorem ipsum dolor sit amet.",
-    publishedAt: "2026-10-18T09:00:00+07:00",
-    status: "published",
-  },
-];
+type ApiArticle = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content?: string | null;
+  coverImage: string | null;
+  coverImageAlt: string | null;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  seo?: {
+    metaTitle: string | null;
+    metaDescription: string | null;
+  } | null;
+  publishedAt: string | null;
+};
 
-export async function getLatestInsights(
-  limit = 3
-): Promise<Insight[]> {
-  const insights = SHOW_MOCK_ARTICLES ? mockInsights : [];
-  const now = Date.now();
 
-  return insights
-    .filter(
-      (article) =>
-        article.status === "published" &&
-        Date.parse(article.publishedAt) <= now
-    )
+function normalizeArticle(article: ApiArticle): InsightRecord {
+  return {
+    id: article.id,
+    slug: article.slug,
+    title: article.title,
+    excerpt: article.excerpt ?? "",
+    content: article.content ?? "",
+    coverImage: article.coverImage ?? "",
+    imageAlt: article.coverImageAlt ?? article.title,
+    category: article.category?.name ?? "General",
+    publishedAt: article.publishedAt ?? "",
+    status: "published",
+    seo: article.seo ?? null,
+  };
+}
+
+
+function isPublished(article: ApiArticle): boolean {
+  if (!article.publishedAt) return false;
+
+  const publishedTime = Date.parse(article.publishedAt);
+
+  return (
+    Number.isFinite(publishedTime) &&
+    publishedTime <= Date.now()
+  );
+}
+
+async function fetchArticles(): Promise<ApiArticle[]> {
+  const response = await fetch(`${API_URL}/api/articles`, {
+    next: { revalidate: 300 },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Articles API: ${response.status}`);
+  }
+
+  const data: unknown = await response.json();
+
+  if (!Array.isArray(data)) {
+    throw new Error("Invalid articles API response");
+  }
+
+  return data as ApiArticle[];
+}
+
+
+export async function getAllInsights(): Promise<Insight[]> {
+  const articles = await fetchArticles();
+
+  return articles
+    .filter(isPublished)
     .sort(
       (a, b) =>
-        Date.parse(b.publishedAt) - Date.parse(a.publishedAt) ||
-        b.id.localeCompare(a.id)
+        Date.parse(b.publishedAt!) -
+        Date.parse(a.publishedAt!)
     )
-    .slice(0, limit)
+    .map(normalizeArticle)
     .map(
       ({
         id,
@@ -87,25 +108,40 @@ export async function getLatestInsights(
     );
 }
 
-
-export async function getAllInsights(): Promise<Insight[]> {
-  return getLatestInsights(Number.MAX_SAFE_INTEGER);
+export async function getLatestInsights(
+  limit = 3
+): Promise<Insight[]> {
+  const articles = await getAllInsights();
+  return articles.slice(0, limit);
 }
 
 
 export async function getInsightBySlug(
   slug: string
 ): Promise<InsightRecord | null> {
-  const insights = SHOW_MOCK_ARTICLES ? mockInsights : [];
-  const now = Date.now();
-
-  return (
-    insights.find(
-      (article) =>
-        article.slug === slug &&
-        article.status === "published" &&
-        Date.parse(article.publishedAt) <= now
-    ) ?? null
+  const response = await fetch(
+    `${API_URL}/api/articles/${encodeURIComponent(slug)}`,
+    {
+      next: { revalidate: 300 },
+    }
   );
-}
 
+  // ไม่พบบทความจริง ๆ → 404
+  if (response.status === 404) {
+    return null;
+  }
+
+  // API มีปัญหา → ส่ง Error ให้ Next.js จัดการ
+  if (!response.ok) {
+    throw new Error(`Article API: ${response.status}`);
+  }
+
+  const article = (await response.json()) as ApiArticle;
+
+  // บทความยังไม่เผยแพร่ หรือข้อมูลไม่ถูกต้อง
+  if (!article || !isPublished(article)) {
+    return null;
+  }
+
+  return normalizeArticle(article);
+}
