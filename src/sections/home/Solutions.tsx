@@ -1,6 +1,7 @@
 import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
 import Button from "@/components/Button";
+import SolutionsAurora from "@/components/SolutionsAurora";
 
 const solutions = [
   {
@@ -33,9 +34,12 @@ export default function Solutions() {
   return (
     <section
       id="solutions"
-      className="overflow-hidden bg-white px-5 py-14 lg:px-14 lg:py-20"
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#EAF4F2_0%,#F4F9F7_18%,#FFFFFF_48%)] px-5 py-14 lg:px-14 lg:py-20"
     >
-      <div className="mx-auto max-w-7xl">
+      {/* AMBIENT AURORA — KEEP EXISTING */}
+      <SolutionsAurora />
+
+      <div className="relative z-10 mx-auto max-w-7xl">
         <div className="text-center">
           <p className="text-base font-medium tracking-[0.12em] text-[#506960]">
             OUR SOLUTIONS
@@ -54,7 +58,7 @@ export default function Solutions() {
         </div>
 
         {/* SOLUTION SHOWCASE */}
-        <div className="mt-10 flex flex-col gap-6 lg:mt-14 lg:gap-8">
+        <div className="mt-8 flex flex-col gap-6 lg:mt-14 lg:gap-8">
           {solutions.map((solution, index) => {
             const isHeuron = solution.theme === "heuron";
 
@@ -65,13 +69,13 @@ export default function Solutions() {
                 reverseDelay={index === 0 ? 200 : 0}
               >
                 <article
-                  className={`relative isolate overflow-hidden rounded-[24px] border shadow-[0_12px_36px_rgba(16,60,46,0.05)] lg:min-h-[370px] ${
+                  className={`relative isolate overflow-hidden rounded-[24px] border lg:min-h-[370px] ${
                     isHeuron
-                      ? "border-[#E1EBE5] bg-[#EDF5F0]"
-                      : "border-[#E6EAF0] bg-[#F1F4F7]"
+                      ? "border-[#DCEAE3] bg-white shadow-[0_14px_38px_rgba(11,74,55,0.11)] lg:border-white/90 lg:bg-[#F4FAF7] lg:shadow-[0_16px_45px_rgba(11,74,55,0.12),0_3px_12px_rgba(11,74,55,0.05)]"
+                      : "border-[#E2E9EF] bg-white shadow-[0_14px_38px_rgba(31,71,95,0.09)] lg:border-white/90 lg:bg-[#F5F8FA] lg:shadow-[0_16px_45px_rgba(31,71,95,0.10),0_3px_12px_rgba(31,71,95,0.04)]"
                   }`}
                 >
-                  {/* DESKTOP */}
+                  {/* DESKTOP BACKGROUND — UNCHANGED */}
                   <div className="pointer-events-none absolute inset-0 -z-20 hidden lg:block">
                     <Image
                       src={solution.image}
@@ -82,17 +86,17 @@ export default function Solutions() {
                     />
                   </div>
 
-                  {/* DESKTOP */}
+                  {/* DESKTOP OVERLAY */}
                   <div
                     aria-hidden="true"
                     className={`pointer-events-none absolute inset-0 -z-10 hidden lg:block ${
                       isHeuron
-                        ? "bg-gradient-to-r from-[#EDF5F0]/75 via-[#EDF5F0]/20 to-transparent"
-                        : "bg-gradient-to-r from-[#F1F4F7]/75 via-[#F1F4F7]/20 to-transparent"
+                        ? "bg-[linear-gradient(90deg,rgba(248,252,250,0.98)_0%,rgba(248,252,250,0.94)_28%,rgba(248,252,250,0.45)_43%,transparent_55%)]"
+                        : "bg-[linear-gradient(90deg,rgba(248,250,252,0.98)_0%,rgba(248,250,252,0.94)_28%,rgba(248,250,252,0.45)_43%,transparent_55%)]"
                     }`}
                   />
 
-                  {/* MOBILE */}
+                  {/* MOBILE IMAGE */}
                   <div className="relative h-[205px] overflow-hidden sm:h-[250px] lg:hidden">
                     <Image
                       src={solution.image}
@@ -105,8 +109,15 @@ export default function Solutions() {
                       sizes="(min-width: 640px) 600px, 100vw"
                       className="object-cover object-[80%_center]"
                     />
+
+                    {/* Soft transition into white card surface */}
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-b from-transparent via-white/15 to-white"
+                    />
                   </div>
 
+                  {/* CONTENT */}
                   <div className="relative flex flex-col items-start px-6 pb-7 pt-6 sm:px-8 lg:min-h-[370px] lg:w-[49%] lg:justify-center lg:px-12 lg:py-9">
                     <div className="flex items-start gap-3">
                       <span
