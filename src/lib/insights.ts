@@ -57,7 +57,7 @@ function isPublished(article: ApiArticle): boolean {
 
 async function fetchArticles(): Promise<ApiArticle[]> {
   const response = await fetch(`${API_URL}/api/articles`, {
-    next: { revalidate: 300 },
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -122,7 +122,7 @@ export async function getInsightBySlug(
   const response = await fetch(
     `${API_URL}/api/articles/${encodeURIComponent(slug)}`,
     {
-      next: { revalidate: 300 },
+      cache: "no-store",
     }
   );
 

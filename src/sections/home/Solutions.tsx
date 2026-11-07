@@ -34,7 +34,7 @@ export default function Solutions() {
   return (
     <section
       id="solutions"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#EAF4F2_0%,#F4F9F7_18%,#FFFFFF_48%)] px-5 py-14 lg:px-14 lg:py-20"
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#EAF4F2_0%,#F4F9F7_18%,#FFFFFF_48%)] px-5 py-12 lg:px-14 lg:py-12"
     >
       {/* AMBIENT AURORA — KEEP EXISTING */}
       <SolutionsAurora />
@@ -45,20 +45,24 @@ export default function Solutions() {
             OUR SOLUTIONS
           </p>
 
-          <h2 className="mt-3 text-h2 font-bold leading-tight text-[#0B3328] lg:text-h2-desktop">
+          <h2 className="mt-3 text-h2 font-bold leading-tight tracking-tight text-[#0B3328] lg:text-h2-desktop">
             เทคโนโลยีและนวัตกรรม
             <br className="lg:hidden" />
-            <span className="whitespace-nowrap">เพื่อสุขภาพ</span>
+            <span className="whitespace-nowrap text-[#16845F]">
+              {" "}
+              เพื่อสุขภาพ
+            </span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-[1.8] text-[#506960]">
+          <p className="mx-auto mt-4 hidden max-w-3xl text-base leading-[1.8] text-[#506960] lg:block">
             NeuroLink นำเทคโนโลยีและนวัตกรรมด้านสุขภาพมาประยุกต์ใช้
+            <br />
             เพื่อให้การดูแลสุขภาพเป็นเรื่องที่เข้าใจง่ายและนำไปใช้ได้จริง
           </p>
         </div>
 
         {/* SOLUTION SHOWCASE */}
-        <div className="mt-8 flex flex-col gap-6 lg:mt-14 lg:gap-8">
+        <div className="mt-6 flex flex-col gap-6 lg:mt-9 lg:gap-6">
           {solutions.map((solution, index) => {
             const isHeuron = solution.theme === "heuron";
 
@@ -69,7 +73,7 @@ export default function Solutions() {
                 reverseDelay={index === 0 ? 200 : 0}
               >
                 <article
-                  className={`relative isolate overflow-hidden rounded-[24px] border lg:min-h-[370px] ${
+                  className={`relative isolate overflow-hidden rounded-[24px] border lg:min-h-[340px] ${
                     isHeuron
                       ? "border-[#DCEAE3] bg-white shadow-[0_14px_38px_rgba(11,74,55,0.11)] lg:border-white/90 lg:bg-[#F4FAF7] lg:shadow-[0_16px_45px_rgba(11,74,55,0.12),0_3px_12px_rgba(11,74,55,0.05)]"
                       : "border-[#E2E9EF] bg-white shadow-[0_14px_38px_rgba(31,71,95,0.09)] lg:border-white/90 lg:bg-[#F5F8FA] lg:shadow-[0_16px_45px_rgba(31,71,95,0.10),0_3px_12px_rgba(31,71,95,0.04)]"
@@ -118,7 +122,7 @@ export default function Solutions() {
                   </div>
 
                   {/* CONTENT */}
-                  <div className="relative flex flex-col items-start px-6 pb-7 pt-6 sm:px-8 lg:min-h-[370px] lg:w-[49%] lg:justify-center lg:px-12 lg:py-9">
+                  <div className="relative flex flex-col items-start px-6 pb-7 pt-6 sm:px-8 lg:min-h-[340px] lg:w-[49%] lg:justify-center lg:px-10 lg:py-7">
                     <div className="flex items-start gap-3">
                       <span
                         className={`shrink-0 text-sm font-medium ${

@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import InsightCard from "@/components/InsightCard";
+import { useEffect, useMemo, useState } from "react";
 import type { Insight } from "@/types/insight";
+import InsightCard from "@/components/InsightCard";
 
-const PAGE_SIZE = 6;
+const MOBILE_PAGE_SIZE = 3;
+const DESKTOP_PAGE_SIZE = 6;
 
 export default function InsightsExplorer({
   articles,
@@ -13,6 +14,25 @@ export default function InsightsExplorer({
 }) {
   const [category, setCategory] = useState("All Articles");
   const [page, setPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const updateScreenSize = () => {
+      setIsMobile(mediaQuery.matches);
+    };
+
+    updateScreenSize();
+
+    mediaQuery.addEventListener("change", updateScreenSize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateScreenSize);
+    };
+  }, []);
+
+  const pageSize = isMobile ? MOBILE_PAGE_SIZE : DESKTOP_PAGE_SIZE;
 
   const categories = useMemo(
     () => [
@@ -31,16 +51,13 @@ export default function InsightsExplorer({
     [articles, category],
   );
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredArticles.length / PAGE_SIZE),
-  );
+  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / pageSize));
 
   const currentPage = Math.min(page, totalPages);
 
   const visibleArticles = filteredArticles.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE,
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
   );
 
   const pageNumbers = useMemo(() => {
@@ -113,7 +130,7 @@ export default function InsightsExplorer({
 
       {/* ARTICLE GRID */}
       {visibleArticles.length > 0 ? (
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:mt-9 lg:grid-cols-3 lg:gap-6">
+        <div className="mt-6 grid grid-rows-[repeat(3,164px)] gap-4 sm:grid-rows-[repeat(3,180px)] md:grid-cols-2 md:grid-rows-[repeat(3,300px)] lg:mt-9 lg:grid-cols-3 lg:grid-rows-[repeat(2,350px)] lg:gap-6">
           {visibleArticles.map((article) => (
             <InsightCard key={article.id} article={article} />
           ))}

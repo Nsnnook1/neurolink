@@ -106,23 +106,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <p className="mt-5 line-clamp-2 text-base leading-[1.8] text-[#506960] lg:hidden">
             {article.excerpt}
           </p>
-
-          {/* MOBILE READ MORE */}
-          <a
-            href="#article-content"
-            className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#07583F] px-6 text-base font-semibold text-white hover:bg-[#064B36] lg:hidden"
-          >
-            อ่านบทความเพิ่มเติม ↓
-          </a>
-
-          {/* DESKTOP SCROLL CUE */}
-          <a
-            href="#article-content"
-            className="mt-12 hidden flex-col items-center gap-2 text-xs font-semibold tracking-[0.15em] text-[#398366] lg:flex"
-          >
-            อ่านบทความเพิ่มเติม
-            <span className="text-xl">↓</span>
-          </a>
         </div>
       </section>
 
