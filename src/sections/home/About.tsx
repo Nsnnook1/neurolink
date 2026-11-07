@@ -98,7 +98,10 @@ function ConsultationImage() {
     const element = imageRef.current;
     if (!element) return;
 
-    if (!("IntersectionObserver" in window)) {
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !("IntersectionObserver" in window)
+    ) {
       element.classList.add("is-visible");
       return;
     }
@@ -107,7 +110,8 @@ function ConsultationImage() {
       ([entry]) => {
         if (entry.isIntersecting) {
           element.classList.add("is-visible");
-          observer.disconnect();
+        } else {
+          element.classList.remove("is-visible");
         }
       },
       {
@@ -124,7 +128,7 @@ function ConsultationImage() {
   return (
     <div
       ref={imageRef}
-      className="about-image-reveal relative mt-10 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/80 bg-[#E7F0E9] shadow-[0_18px_45px_rgba(16,60,46,0.12)] lg:mt-7 lg:aspect-[16/9]"
+      className="about-image-reveal relative mt-8 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/80 bg-[#E7F0E9] shadow-[0_18px_45px_rgba(16,60,46,0.12)] lg:mt-5 lg:aspect-[16/9]"
     >
       <Image
         src="/images/consultation.png"
@@ -141,7 +145,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative isolate overflow-hidden bg-[#F8FBF9] px-5 py-12 lg:px-8 lg:py-20"
+      className="relative isolate overflow-hidden bg-[#F8FBF9] px-5 py-12 lg:px-8 lg:py-12"
     >
       {/* Background */}
       <div
@@ -162,7 +166,7 @@ export default function About() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 mx-auto grid max-w-[1280px] gap-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-20">
+      <div className="relative z-10 mx-auto grid max-w-[1280px] gap-12 lg:grid-cols-2 lg:items-start lg:gap-12">
         {/* About Neurolink */}
         <div>
           <div className="relative">
