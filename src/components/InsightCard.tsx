@@ -5,9 +5,13 @@ import { getInsightImage } from "@/lib/insightImages";
 
 type InsightCardProps = {
   article: Insight;
+  featured?: boolean;
 };
 
-export default function InsightCard({ article }: InsightCardProps) {
+export default function InsightCard({
+  article,
+  featured = false,
+}: InsightCardProps) {
   const imageSrc = getInsightImage(article);
 
   const publishedDate = new Date(article.publishedAt);
@@ -29,7 +33,11 @@ export default function InsightCard({ article }: InsightCardProps) {
         className="flex h-full min-h-0 min-w-0 overflow-hidden rounded-[18px] border border-[#E5EDE8] bg-white shadow-[0_3px_16px_rgba(16,58,48,0.035)] transition-colors duration-200 hover:border-[#C6DDD0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07583F] md:flex-col"
       >
         {/* IMAGE */}
-        <div className="relative w-[116px] shrink-0 overflow-hidden bg-[#E7F0E9] sm:w-[150px] md:h-[140px] md:w-full lg:h-[150px]">
+        <div
+          className={`relative w-[116px] shrink-0 overflow-hidden bg-[#E7F0E9] sm:w-[150px] md:h-[140px] md:w-full ${
+            featured ? "lg:h-[220px]" : "lg:h-[150px]"
+          }`}
+        >
           {imageSrc ? (
             <Image
               src={imageSrc}

@@ -58,6 +58,7 @@ function isPublished(article: ApiArticle): boolean {
 async function fetchArticles(): Promise<ApiArticle[]> {
   const response = await fetch(`${API_URL}/api/articles`, {
     cache: "no-store",
+    signal: AbortSignal.timeout(5000),
   });
 
   if (!response.ok) {
@@ -111,8 +112,12 @@ export async function getAllInsights(): Promise<Insight[]> {
 export async function getLatestInsights(
   limit = 3
 ): Promise<Insight[]> {
-  const articles = await getAllInsights();
-  return articles.slice(0, limit);
+  try {
+    const articles = await getAllInsights();
+    return articles.slice(0, limit);
+  } catch {
+    return [];
+  }
 }
 
 

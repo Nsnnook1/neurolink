@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import Button from "./Button";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -37,6 +38,53 @@ export default function Navbar() {
     setIsMenuOpen(false);
   }
 
+  function scrollToHome(event: React.MouseEvent<HTMLAnchorElement>) {
+    closeMenu();
+
+    if (pathname === "/") {
+      event.preventDefault();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }
+
+  function scrollToContact(event: React.MouseEvent<HTMLAnchorElement>) {
+    closeMenu();
+
+    if (pathname === "/") {
+      event.preventDefault();
+
+      if (window.location.hash) {
+        window.history.replaceState(window.history.state, "", "/");
+      }
+
+      document.getElementById("contact")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (pathname !== "/" || window.location.hash !== "#contact") {
+      return;
+    }
+
+    const frame = requestAnimationFrame(() => {
+      document.getElementById("contact")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+      window.history.replaceState(window.history.state, "", "/");
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
+
   function isActive(href: string) {
     if (href === "/") {
       return pathname === "/";
@@ -58,10 +106,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`
-    sticky top-0 z-50 w-full
-    transition-[background-color,box-shadow,backdrop-filter]
-    duration-500 ease-in-out
+      className={`relative sticky top-0 z-50 w-full transition-[background-color,box-shadow,backdrop-filter] duration-500 ease-in-out
     ${
       pathname === "/" && !isScrolled
         ? "bg-white/15 backdrop-blur-sm"
@@ -73,15 +118,16 @@ export default function Navbar() {
         <Link
           href="/"
           className="inline-flex shrink-0 items-center"
-          onClick={closeMenu}
+          onClick={scrollToHome}
           aria-label="NeuroLink AI - Home"
         >
           <Image
             src="/images/NeuroLinkLogo.png"
             alt="NeuroLink AI"
-            width={200}
-            height={60}
-            className="w-40 h-auto"
+            width={180}
+            height={54}
+            priority
+            className="h-auto w-[145px] object-contain sm:w-[170px] lg:w-[250px]"
           />
         </Link>
 
@@ -127,26 +173,33 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Contact Button */}
-        <Link
+        {/* <Button
           href="/#contact"
-          aria-current={isActive("/contact") ? "page" : undefined}
-          className={`
-            hidden min-h-12 items-center justify-center
-            rounded-full px-6 py-3 text-base font-semibold
-            transition-all duration-300
-            focus-visible:outline-2
-            focus-visible:outline-offset-4
-            focus-visible:outline-[#07583F]
-            lg:inline-flex
-            ${
-              isActive("/contact")
-                ? "bg-[#DCECE3] text-[#07583F]"
-                : "bg-[#07583F] text-white hover:bg-[#DCECE3] hover:text-[#07583F]"
-            }
-          `}
+          variant="primary"
+          color="green"
+          size="md"
+          showArrow={false}
+          className="!hidden min-h-12 px-6 text-base lg:!inline-flex"
         >
           Contact Us
-        </Link>
+        </Button> */}
+        <Button
+          href="/#contact"
+          onClick={scrollToContact}
+          variant="primary"
+          color="green"
+          size="md"
+          showArrow={false}
+          className="
+    !hidden min-h-12 px-6 text-base
+    focus-visible:outline-2
+    focus-visible:outline-offset-4
+    focus-visible:outline-[#07583F]
+    lg:!inline-flex
+  "
+        >
+          Contact Us
+        </Button>
 
         {/* Mobile Menu Button */}
         <button
@@ -169,30 +222,32 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Menu */}
+      {/* Mobile Menu */}
 
-      {/* Smooth Mobile Dropdown */}
+      {/* Mobile Menu */}
       <div
         id="mobile-menu"
         aria-hidden={!isMenuOpen}
         inert={!isMenuOpen}
         className={`
-          absolute left-0 right-0 top-full z-50
-          grid overflow-hidden bg-white
-          shadow-[0_18px_35px_rgba(13,65,45,0.10)]
-          transition-[grid-template-rows,opacity]
-          duration-500
-          ease-[cubic-bezier(0.22,1,0.36,1)]
-          motion-reduce:transition-none
-          lg:hidden
-          ${
-            isMenuOpen
-              ? "grid-rows-[1fr] opacity-100"
-              : "pointer-events-none grid-rows-[0fr] opacity-0"
-          }
-        `}
+    absolute left-0 right-0 top-full z-50
+    grid overflow-hidden
+    border-t border-[#E0EAE3]
+    transition-[grid-template-rows,opacity]
+    duration-500
+    ease-[cubic-bezier(0.22,1,0.36,1)]
+    motion-reduce:transition-none
+    lg:hidden
+    ${
+      isMenuOpen
+        ? "grid-rows-[1fr] opacity-100"
+        : "pointer-events-none grid-rows-[0fr] opacity-0"
+    }
+    ${isScrolled ? "bg-white/95 backdrop-blur-xl" : "bg-white"}
+  `}
       >
         <div className="min-h-0 overflow-hidden">
-          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4">
+          <div className="flex flex-col gap-2 px-5 py-5">
             {navLinks.map((link) => {
               const active = isActive(link.href);
 
@@ -203,15 +258,15 @@ export default function Navbar() {
                   onClick={closeMenu}
                   aria-current={active ? "page" : undefined}
                   className={`
-                    flex min-h-11 items-center
-                    rounded-xl px-4 py-2 text-base
-                    transition-colors duration-200
-                    ${
-                      active
-                        ? "bg-[#E7F0E9] font-semibold text-[#07583F]"
-                        : "font-medium text-[#506960] hover:bg-[#F4F8F5]"
-                    }
-                  `}
+              flex min-h-12 items-center
+              rounded-xl px-4 py-3 text-base
+              transition-colors duration-300
+              ${
+                active
+                  ? "bg-[#E7F0E9] font-semibold text-[#07583F]"
+                  : "font-medium text-[#506960] hover:bg-[#F4F8F5]"
+              }
+            `}
                 >
                   {link.label}
                 </Link>
@@ -220,18 +275,17 @@ export default function Navbar() {
 
             <Link
               href="/#contact"
-              onClick={closeMenu}
-              aria-current={isActive("/contact") ? "page" : undefined}
+              onClick={scrollToContact}
               className={`
-                mt-2 flex min-h-11 items-center justify-center
-                rounded-full px-6 py-2 text-base font-semibold
-                transition-colors duration-200
-                ${
-                  isActive("/contact")
-                    ? "bg-[#DCECE3] text-[#07583F]"
-                    : "bg-[#07583F] text-white hover:bg-[#064B36]"
-                }
-              `}
+          mt-2 flex min-h-12 items-center
+          justify-center rounded-full px-6 py-3
+          text-base font-semibold
+          ${
+            isActive("/#contact")
+              ? "bg-[#DCECE3] text-[#07583F]"
+              : "bg-[#07583F] text-white"
+          }
+        `}
             >
               Contact Us
             </Link>

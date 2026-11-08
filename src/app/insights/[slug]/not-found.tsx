@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Button from "@/components/Button";
 
 export default function ArticleNotFound() {
   return (
@@ -21,12 +21,15 @@ export default function ArticleNotFound() {
           คุณสามารถกลับไปสำรวจบทความอื่น ๆ ได้
         </p>
 
-        <Link
+        <Button
           href="/insights"
-          className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-[#07583F] px-8 text-base font-semibold text-white transition-colors hover:bg-[#064B36]"
+          variant="outline"
+          color="green"
+          size="md"
+          showArrow={false}
         >
-          ดูบทความทั้งหมด
-        </Link>
+          ← ดูบทความทั้งหมด
+        </Button>
       </div>
     </main>
   );

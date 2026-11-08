@@ -4,7 +4,7 @@ import { getInsightImage } from "@/lib/insightImages";
 import type { Metadata } from "next";
 import sanitizeHtml from "sanitize-html";
 import Image from "next/image";
-import Link from "next/link";
+import Button from "@/components/Button";
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
@@ -62,12 +62,16 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
       <section className="relative overflow-hidden bg-[#FAFCFB] bg-[radial-gradient(ellipse_at_85%_15%,rgba(182,225,211,0.25),transparent_55%),radial-gradient(ellipse_at_5%_95%,rgba(216,237,232,0.20),transparent_55%)]">
         <div className="mx-auto max-w-[1280px] px-5 pb-10 pt-6 lg:px-12 lg:pb-20 lg:pt-16">
-          <Link
+          <Button
             href="/insights"
-            className="inline-flex min-h-11 items-center text-sm font-medium text-[#398366] hover:text-[#07583F]"
+            variant="outline"
+            color="green"
+            size="md"
+            showArrow={false}
+            className="mb-0"
           >
             ← กลับไปหน้าบทความทั้งหมด
-          </Link>
+          </Button>
 
           <div className="mt-5 grid items-center gap-5 lg:mt-10 lg:grid-cols-[1fr_1.05fr] lg:gap-12">
             {/* ARTICLE INFO */}
@@ -168,15 +172,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               }),
             }}
           />
-
-          <div className="mt-16 border-t border-[#D7E4DC] pt-8">
-            <Link
+            <Button
               href="/insights"
-              className="inline-flex min-h-12 items-center rounded-full border border-[#07583F] px-6 text-base font-semibold text-[#07583F] hover:bg-[#07583F] hover:text-white"
+              variant="outline"
+              color="green"
+              size="md"
+              showArrow={false}
             >
               ← ดูบทความทั้งหมด
-            </Link>
-          </div>
+            </Button>
         </article>
       </section>
     </main>

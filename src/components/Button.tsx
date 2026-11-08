@@ -1,5 +1,5 @@
+import type { MouseEventHandler, ReactNode } from "react";
 import Link from "next/link";
-import type { ReactNode } from "react";
 
 type ButtonProps = {
   children: ReactNode;
@@ -9,6 +9,7 @@ type ButtonProps = {
   size?: "sm" | "md" | "lg";
   showArrow?: boolean;
   className?: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
 export default function Button({
@@ -19,6 +20,7 @@ export default function Button({
   size = "md",
   showArrow = true,
   className = "",
+  onClick,
 }: ButtonProps) {
   const base =
     "inline-flex w-fit items-center justify-center gap-4 rounded-full font-semibold transition-all duration-300";
@@ -49,6 +51,7 @@ export default function Button({
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`
         ${base}
         ${sizes[size]}
