@@ -16,7 +16,9 @@ const navLinks = [
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
   const pathname = usePathname();
+  const isTransparentPage = pathname === "/" || pathname === "/about";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,15 +108,15 @@ export default function Navbar() {
 
   return (
     <header
-      className={`relative sticky top-0 z-50 w-full transition-[background-color,box-shadow,backdrop-filter] duration-500 ease-in-out
-    ${
-      pathname === "/" && !isScrolled
-        ? "bg-white/15 backdrop-blur-sm"
-        : "bg-white/95 shadow-sm backdrop-blur-xl"
-    }
-  `}
+      className={`relative sticky top-0 z-50 w-full transition-[background-color,box-shadow,backdrop-filter] duration-500 ease-in-out        ${
+        isTransparentPage && !isScrolled
+          ? "bg-white/15 backdrop-blur-sm"
+          : "bg-white/95 shadow-sm backdrop-blur-xl"
+      }
+      `}
     >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-10">
+        {/* Logo */}
         <Link
           href="/"
           className="inline-flex shrink-0 items-center"
@@ -173,16 +175,6 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Contact Button */}
-        {/* <Button
-          href="/#contact"
-          variant="primary"
-          color="green"
-          size="md"
-          showArrow={false}
-          className="!hidden min-h-12 px-6 text-base lg:!inline-flex"
-        >
-          Contact Us
-        </Button> */}
         <Button
           href="/#contact"
           onClick={scrollToContact}
@@ -191,12 +183,12 @@ export default function Navbar() {
           size="md"
           showArrow={false}
           className="
-    !hidden min-h-12 px-6 text-base
-    focus-visible:outline-2
-    focus-visible:outline-offset-4
-    focus-visible:outline-[#07583F]
-    lg:!inline-flex
-  "
+            !hidden min-h-12 px-6 text-base
+            focus-visible:outline-2
+            focus-visible:outline-offset-4
+            focus-visible:outline-[#07583F]
+            lg:!inline-flex
+          "
         >
           Contact Us
         </Button>
@@ -222,29 +214,26 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Menu */}
-      {/* Mobile Menu */}
-
-      {/* Mobile Menu */}
       <div
         id="mobile-menu"
         aria-hidden={!isMenuOpen}
         inert={!isMenuOpen}
         className={`
-    absolute left-0 right-0 top-full z-50
-    grid overflow-hidden
-    border-t border-[#E0EAE3]
-    transition-[grid-template-rows,opacity]
-    duration-500
-    ease-[cubic-bezier(0.22,1,0.36,1)]
-    motion-reduce:transition-none
-    lg:hidden
-    ${
-      isMenuOpen
-        ? "grid-rows-[1fr] opacity-100"
-        : "pointer-events-none grid-rows-[0fr] opacity-0"
-    }
-    ${isScrolled ? "bg-white/95 backdrop-blur-xl" : "bg-white"}
-  `}
+          absolute left-0 right-0 top-full z-50
+          grid overflow-hidden
+          border-t border-[#E0EAE3]
+          transition-[grid-template-rows,opacity]
+          duration-500
+          ease-[cubic-bezier(0.22,1,0.36,1)]
+          motion-reduce:transition-none
+          lg:hidden
+          ${
+            isMenuOpen
+              ? "grid-rows-[1fr] opacity-100"
+              : "pointer-events-none grid-rows-[0fr] opacity-0"
+          }
+          ${isScrolled ? "bg-white/95 backdrop-blur-xl" : "bg-white"}
+        `}
       >
         <div className="min-h-0 overflow-hidden">
           <div className="flex flex-col gap-2 px-5 py-5">
@@ -258,34 +247,35 @@ export default function Navbar() {
                   onClick={closeMenu}
                   aria-current={active ? "page" : undefined}
                   className={`
-              flex min-h-12 items-center
-              rounded-xl px-4 py-3 text-base
-              transition-colors duration-300
-              ${
-                active
-                  ? "bg-[#E7F0E9] font-semibold text-[#07583F]"
-                  : "font-medium text-[#506960] hover:bg-[#F4F8F5]"
-              }
-            `}
+                    flex min-h-12 items-center
+                    rounded-xl px-4 py-3 text-base
+                    transition-colors duration-300
+                    ${
+                      active
+                        ? "bg-[#E7F0E9] font-semibold text-[#07583F]"
+                        : "font-medium text-[#506960] hover:bg-[#F4F8F5]"
+                    }
+                  `}
                 >
                   {link.label}
                 </Link>
               );
             })}
 
+            {/* Mobile Contact */}
             <Link
               href="/#contact"
               onClick={scrollToContact}
               className={`
-          mt-2 flex min-h-12 items-center
-          justify-center rounded-full px-6 py-3
-          text-base font-semibold
-          ${
-            isActive("/#contact")
-              ? "bg-[#DCECE3] text-[#07583F]"
-              : "bg-[#07583F] text-white"
-          }
-        `}
+                mt-2 flex min-h-12 items-center
+                justify-center rounded-full px-6 py-3
+                text-base font-semibold
+                ${
+                  isActive("/#contact")
+                    ? "bg-[#DCECE3] text-[#07583F]"
+                    : "bg-[#07583F] text-white"
+                }
+              `}
             >
               Contact Us
             </Link>

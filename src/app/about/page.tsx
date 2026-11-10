@@ -1,6 +1,14 @@
+import AboutHero from "@/sections/about/AboutHero";
+import WhoWeAre from "@/sections/about/WhoWeAre";
 
-function page() {
-  return <div>page</div>;
+export default function AboutPage() {
+  return (
+    <main>
+      <AboutHero />
+      <WhoWeAre />
+      {/* <VisionMission />
+      <WhyNeurolink />
+      <AboutCTA /> */}
+    </main>
+  );
 }
-
-export default page;

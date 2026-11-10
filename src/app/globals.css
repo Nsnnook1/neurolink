@@ -271,3 +271,73 @@ html {
     transition: none;
   }
 }
+
+/* =========================================
+   ABOUT HERO — PREMIUM MOTION
+   ========================================= */
+
+/* Text staggered reveal */
+@keyframes about-text-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.about-text-reveal {
+  animation: about-text-rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.about-text-delay-1 {
+  animation-delay: 150ms;
+}
+
+.about-text-delay-2 {
+  animation-delay: 300ms;
+}
+
+.about-text-delay-3 {
+  animation-delay: 500ms;
+}
+
+.about-text-delay-4 {
+  animation-delay: 700ms;
+}
+
+/* Light trail drawing */
+@keyframes about-light-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.about-light-line,
+.about-light-glow {
+  pathlength: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: about-light-draw 2200ms ease-in-out 300ms forwards;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .about-text-reveal,
+  .about-light-line,
+  .about-light-glow {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+
