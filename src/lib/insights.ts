@@ -1,10 +1,13 @@
 
 import type { Insight, InsightRecord } from "@/types/insight";
 
-const API_URL =
+const API_URL = (
   process.env.NEUROLINK_API_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://neurolink-api-p8my.onrender.com";
+  "https://neurolink-api-p8my.onrender.com"
+).replace(/\/+$/, "");
+
+const API_TIMEOUT = 60_000;
 
 type ApiArticle = {
   id: string;
@@ -26,7 +29,6 @@ type ApiArticle = {
   publishedAt: string | null;
 };
 
-
 function normalizeArticle(article: ApiArticle): InsightRecord {
   return {
     id: article.id,
@@ -43,7 +45,6 @@ function normalizeArticle(article: ApiArticle): InsightRecord {
   };
 }
 
-
 function isPublished(article: ApiArticle): boolean {
   if (!article.publishedAt) return false;
 
@@ -55,14 +56,26 @@ function isPublished(article: ApiArticle): boolean {
   );
 }
 
-async function fetchArticles(): Promise<ApiArticle[]> {
-  const response = await fetch(`${API_URL}/api/articles`, {
+async function fetchFromApi(
+  path: string
+): Promise<Response> {
+  const response = await fetch(`${API_URL}${path}`, {
     cache: "no-store",
-    signal: AbortSignal.timeout(5000),
+    signal: AbortSignal.timeout(API_TIMEOUT),
   });
 
-  if (!response.ok) {
+  if (!response.ok && response.status !== 404) {
     throw new Error(`Articles API: ${response.status}`);
+  }
+
+  return response;
+}
+
+async function fetchArticles(): Promise<ApiArticle[]> {
+  const response = await fetchFromApi("/api/articles");
+
+  if (response.status === 404) {
+    throw new Error("Articles API endpoint not found");
   }
 
   const data: unknown = await response.json();
@@ -74,7 +87,6 @@ async function fetchArticles(): Promise<ApiArticle[]> {
   return data as ApiArticle[];
 }
 
-
 export async function getAllInsights(): Promise<Insight[]> {
   const articles = await fetchArticles();
 
@@ -85,9 +97,8 @@ export async function getAllInsights(): Promise<Insight[]> {
         Date.parse(b.publishedAt!) -
         Date.parse(a.publishedAt!)
     )
-    .map(normalizeArticle)
-    .map(
-      ({
+    .map((article) => {
+      const {
         id,
         slug,
         title,
@@ -96,7 +107,9 @@ export async function getAllInsights(): Promise<Insight[]> {
         imageAlt,
         category,
         publishedAt,
-      }) => ({
+      } = normalizeArticle(article);
+
+      return {
         id,
         slug,
         title,
@@ -105,8 +118,8 @@ export async function getAllInsights(): Promise<Insight[]> {
         imageAlt,
         category,
         publishedAt,
-      })
-    );
+      };
+    });
 }
 
 export async function getLatestInsights(
@@ -115,35 +128,25 @@ export async function getLatestInsights(
   try {
     const articles = await getAllInsights();
     return articles.slice(0, limit);
-  } catch {
+  } catch (error) {
+    console.error("Failed to load latest insights:", error);
     return [];
   }
 }
 
-
 export async function getInsightBySlug(
   slug: string
 ): Promise<InsightRecord | null> {
-  const response = await fetch(
-    `${API_URL}/api/articles/${encodeURIComponent(slug)}`,
-    {
-      cache: "no-store",
-    }
+  const response = await fetchFromApi(
+    `/api/articles/${encodeURIComponent(slug)}`
   );
 
-  // ไม่พบบทความจริง ๆ → 404
   if (response.status === 404) {
     return null;
   }
 
-  // API มีปัญหา → ส่ง Error ให้ Next.js จัดการ
-  if (!response.ok) {
-    throw new Error(`Article API: ${response.status}`);
-  }
+  const article: ApiArticle = await response.json();
 
-  const article = (await response.json()) as ApiArticle;
-
-  // บทความยังไม่เผยแพร่ หรือข้อมูลไม่ถูกต้อง
   if (!article || !isPublished(article)) {
     return null;
   }

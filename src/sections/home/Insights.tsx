@@ -1,11 +1,11 @@
-// import { getLatestInsights } from "@/lib/insights";
-import type { Insight } from "@/types/insight";
+import { getLatestInsights } from "@/lib/insights";
+// import type { Insight } from "@/types/insight";
 import Button from "@/components/Button";
 import InsightCard from "@/components/InsightCard";
 
 export default async function Insights() {
-  // const articles = await getLatestInsights(3);
-  const articles: Insight[] = [];
+  const articles = await getLatestInsights(3);
+  // const articles: Insight[] = [];
 
   return (
     <section
@@ -57,7 +57,6 @@ export default async function Insights() {
             <p className="mt-3 text-base leading-[1.8] text-[#506960]">
               ติดตามความรู้ด้านสุขภาพ เทคโนโลยี
               <span className="block lg:inline">
-                {" "}
                 และการดูแลคุณภาพชีวิตได้ที่นี่
               </span>
             </p>

@@ -49,7 +49,6 @@ export default function Solutions() {
             เทคโนโลยีและนวัตกรรม
             <br className="lg:hidden" />
             <span className="whitespace-nowrap text-[#16845F]">
-              {" "}
               เพื่อสุขภาพ
             </span>
           </h2>

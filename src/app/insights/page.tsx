@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import InsightsExplorer from "@/components/InsightsExplorer";
 import { getAllInsights } from "@/lib/insights";
 import { getInsightImage } from "@/lib/insightImages";
@@ -68,25 +67,19 @@ function GlassTopic({
   return (
     <div
       className="insights-glass-reveal group/topic relative flex min-w-0 flex-1 flex-col items-center pt-7 text-center"
-      style={{
-        animationDelay: `${350 + index * 150}ms`,
-      }}
+      style={{ animationDelay: `${350 + index * 150}ms` }}
     >
-      {/* Ambient glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-3 bottom-0 h-20 rounded-full bg-[#A3E6D2]/25 blur-2xl"
       />
 
-      {/* Glass surface */}
       <div className="insights-glass-hover relative flex h-[112px] w-full flex-col items-center justify-end rounded-[28px] border border-white/60 bg-gradient-to-br from-white/45 via-white/20 to-[#C7F1E8]/25 px-2 pb-5 shadow-[0_12px_35px_rgba(20,101,81,0.055)] backdrop-blur-xl">
-        {/* Floating icon */}
-        <span className="absolute -top-7 flex h-[64px] w-[64px] items-center justify-center rounded-full border border-white/90 bg-gradient-to-br from-white/90 to-[#E7F8F2]/80 text-[#07583F] shadow-[0_8px_22px_rgba(20,101,81,0.08)] backdrop-blur-xl">
+        <span className="absolute -top-7 flex h-16 w-16 items-center justify-center rounded-full border border-white/90 bg-gradient-to-br from-white/90 to-[#E7F8F2]/80 text-[#07583F] shadow-[0_8px_22px_rgba(20,101,81,0.08)] backdrop-blur-xl">
           <TopicIcon name={icon} />
         </span>
 
-        {/* Label */}
-        <p className="relative z-10 flex min-h-[38px] items-center justify-center text-[12px] font-semibold leading-[1.5] text-[#103A30] xl:text-[13px]">
+        <p className="relative z-10 flex min-h-[38px] items-center justify-center text-xs font-semibold leading-[1.5] text-[#103A30] xl:text-[13px]">
           {label}
         </p>
       </div>
@@ -95,9 +88,7 @@ function GlassTopic({
 }
 
 export default async function InsightsPage() {
-  const allArticles = await getAllInsights();
-
-  const [featuredArticle, ...remainingArticles] = allArticles;
+  const [featuredArticle, ...remainingArticles] = await getAllInsights();
 
   const featuredImage = featuredArticle
     ? getInsightImage(featuredArticle)
@@ -107,8 +98,7 @@ export default async function InsightsPage() {
     <main className="insights-page min-h-screen bg-[#FAFCFB]">
       <div className="insights-background-content">
         {/* HERO */}
-        <section className="insights-hero relative px-5 pb-10 pt-12 sm:px-8 lg:pb-5 lg:pt-12">
-          {/* AURORA LIGHT TRAIL - SAME AS HOME HERO */}
+        <section className="insights-hero relative px-5 pb-10 pt-12 sm:px-8 lg:pb-5">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 z-0 hidden lg:block"
@@ -120,15 +110,12 @@ export default async function InsightsPage() {
               fill="none"
             >
               <g transform="translate(630) scale(1 1.2)">
-                {/* Soft glow */}
                 <path
                   d="M160 0 C 220 105, 390 290, 630 300"
                   stroke="#E5FFFA"
                   strokeWidth="9"
                   strokeOpacity="0.25"
                 />
-
-                {/* Cyan light trail */}
                 <path
                   d="M160 0 C 220 105, 390 290, 630 300"
                   stroke="#A9FFF0"
@@ -136,17 +123,16 @@ export default async function InsightsPage() {
                   strokeOpacity="0.85"
                   className="hero-light-trail"
                   pathLength="1"
-                  
                 />
               </g>
             </svg>
           </div>
 
           <div className="mx-auto max-w-[1120px]">
-            <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
+            <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr]">
               <div className="min-w-0">
                 <div className="flex items-center gap-4">
-                  <p className="text-xs font-bold tracking-[0.16em] text-[#07583F] sm:text-sm">
+                  <p className="text-caption font-bold tracking-[0.16em] text-[#07583F]">
                     NEUROLINK INSIGHTS
                   </p>
 
@@ -156,7 +142,7 @@ export default async function InsightsPage() {
                   />
                 </div>
 
-                <h1 className="mt-4 text-[34px] font-bold leading-[1.3] tracking-tight text-[#103A30] sm:text-[44px] lg:text-[43px] xl:text-[46px]">
+                <h1 className="mt-4 text-h1 font-bold leading-[1.3] tracking-tight text-[#103A30] lg:text-h2-desktop xl:text-[46px]">
                   เรื่องสุขภาพที่ควรรู้
                   <br />
                   <span className="text-[#16845F]">
@@ -169,7 +155,7 @@ export default async function InsightsPage() {
                   className="mt-5 h-[3px] w-12 rounded-full bg-[#16845F] lg:h-px lg:w-[240px] lg:bg-gradient-to-r lg:from-[#A5CFC0] lg:to-transparent"
                 />
 
-                <p className="mt-5 max-w-[610px] text-[16px] leading-[1.9] text-[#36584D] sm:text-[17px] lg:max-w-[560px] lg:text-[16px]">
+                <p className="mt-5 max-w-[610px] text-body leading-[1.9] text-[#36584D] lg:max-w-[560px]">
                   บทความและองค์ความรู้ด้านสุขภาพ เทคโนโลยี และการดูแลคุณภาพชีวิต
                   เพื่อช่วยให้ทุกคนเข้าใจมากขึ้น และดูแลสุขภาพได้อย่างมั่นใจ
                 </p>
@@ -217,9 +203,8 @@ export default async function InsightsPage() {
                   )}
                 </div>
 
-                {/* DESKTOP FEATURED BACKGROUND */}
+                {/* DESKTOP BACKGROUND */}
                 <div className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block">
-                  {/* Full-width image prevents a hard vertical seam */}
                   <Image
                     src={DESKTOP_FEATURED_IMAGE}
                     alt=""
@@ -229,10 +214,8 @@ export default async function InsightsPage() {
                     className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.025] motion-reduce:transform-none"
                   />
 
-                  {/* White-to-mint gradient blending into the image */}
                   <div className="absolute inset-0 bg-[linear-gradient(90deg,#FFFFFF_0%,#F7FCF9_23%,rgba(242,251,247,0.98)_34%,rgba(227,247,238,0.78)_47%,rgba(210,242,232,0.30)_65%,transparent_82%)]" />
 
-                  {/* Soft mint light near the bottom */}
                   <div className="absolute inset-x-0 bottom-0 h-[38%] bg-gradient-to-t from-[#DDF5E9]/20 to-transparent" />
                 </div>
 
@@ -242,19 +225,19 @@ export default async function InsightsPage() {
                     FEATURED STORY
                   </span>
 
-                  <p className="mt-4 text-sm font-semibold text-[#327D64]">
+                  <p className="mt-4 text-caption font-semibold text-[#327D64]">
                     {featuredArticle.category}
                   </p>
 
-                  <h2 className="mt-3 text-[26px] font-bold leading-[1.35] text-[#103A30] transition-colors group-hover:text-[#16845F] sm:text-[30px] lg:line-clamp-3 lg:text-[28px]">
+                  <h2 className="mt-3 text-h4-desktop font-bold leading-[1.35] text-[#103A30] transition-colors group-hover:text-[#16845F] sm:text-h2 lg:line-clamp-3">
                     {featuredArticle.title}
                   </h2>
 
-                  <p className="mt-4 line-clamp-3 text-[16px] leading-[1.85] text-[#526A61] lg:line-clamp-2 lg:text-[15px]">
+                  <p className="mt-4 line-clamp-3 text-body leading-[1.85] text-[#526A61] lg:line-clamp-2">
                     {featuredArticle.excerpt}
                   </p>
 
-                  <span className="mt-5 inline-flex min-h-11 items-center gap-3 self-start text-base font-semibold text-[#07583F]">
+                  <span className="mt-5 inline-flex min-h-11 items-center gap-3 self-start text-body font-semibold text-[#07583F]">
                     อ่านบทความเพิ่มเติม
                     <span
                       aria-hidden="true"
@@ -273,13 +256,13 @@ export default async function InsightsPage() {
         <section className="px-5 pb-8 pt-7 sm:px-8 lg:pb-24 lg:pt-12">
           <div className="mx-auto max-w-[1120px]">
             <div className="mb-7 hidden items-center gap-5 lg:flex">
-              <h2 className="shrink-0 text-[15px] font-bold tracking-[0.16em] text-[#07583F]">
+              <h2 className="shrink-0 text-caption font-bold tracking-[0.16em] text-[#07583F]">
                 THE LATEST INSIGHTS
               </h2>
 
               <div aria-hidden="true" className="h-px flex-1 bg-[#A8C8BB]" />
 
-              <p className="text-sm text-[#526A61]">
+              <p className="text-caption text-[#526A61]">
                 บทความล่าสุดและเรื่องราวที่น่าสนใจ
               </p>
             </div>

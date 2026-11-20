@@ -73,7 +73,7 @@ export default function AboutPage() {
             {/* Main Headline */}
             <h1 className="about-text-reveal about-text-delay-2 mt-6 text-[38px] font-bold leading-[1.14] tracking-tight text-[#0B3328] sm:text-[52px] lg:text-[64px]">
               Connecting Technology
-              <br className="hidden sm:block" /> with{" "}
+              <br className="hidden sm:block" /> with
               <span className="text-[#16825D]">Better Health</span>
             </h1>
 

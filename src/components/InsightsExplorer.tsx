@@ -102,11 +102,10 @@ export default function InsightsExplorer({
       {/* CATEGORY FILTER */}
       <div
         aria-label="เลือกหมวดหมู่บทความ"
-        className="-mx-5 flex gap-3 overflow-x-auto px-5 pb-3 scrollbar-hide sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
+        className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-3 scrollbar-hide lg:gap-2.5"
       >
         {categories.map((item) => {
           const active = category === item;
-
           return (
             <button
               key={item}
@@ -116,7 +115,7 @@ export default function InsightsExplorer({
                 setPage(1);
               }}
               aria-pressed={active}
-              className={`inline-flex min-h-11 shrink-0 items-center justify-center whitespace-nowrap rounded-full border px-5 py-2.5 text-[15px] font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07583F] ${
+              className={`inline-flex min-h-11 shrink-0 items-center justify-center whitespace-nowrap rounded-full border px-3 py-2.5 text-[13px] font-medium transition-colors duration-200 sm:px-4 sm:text-[14px] lg:px-4 lg:text-[15px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07583F] ${
                 active
                   ? "border-[#07583F] bg-[#07583F] text-white"
                   : "border-[#DCE8E1] bg-white text-[#36594E] hover:border-[#07583F] hover:text-[#07583F]"
